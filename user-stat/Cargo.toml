@@ -16,6 +16,8 @@ tonic = { workspace = true }
 tracing = { workspace = true }
 tracing-subscriber = { workspace = true }
 rand = "0.8.5"
+derive_builder = "0.20.0"
+futures = "0.3.30"
 
 [build-dependencies]
 anyhow = { workspace = true }
