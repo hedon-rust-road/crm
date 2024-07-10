@@ -86,3 +86,30 @@ fn timestamp_query(name: &str, lower: Option<Timestamp>, upper: Option<Timestamp
 fn ts_to_utc(ts: Timestamp) -> DateTime<Utc> {
     Utc.timestamp_opt(ts.seconds, ts.nanos as _).unwrap()
 }
+
+#[cfg(test)]
+mod tests {
+    use futures::StreamExt;
+
+    use crate::config::AppConfig;
+
+    use super::*;
+
+    #[tokio::test]
+    async fn raw_query_should_work() -> anyhow::Result<()> {
+        let config = AppConfig::load().expect("Failed to load config");
+        let svc = UserStatsService::new(config).await;
+        let mut stream = svc
+            .raw_query(RawQueryRequest {
+                query: "select * from user_stats where created_at > '2024-01-01' limit 5"
+                    .to_string(),
+            })
+            .await?
+            .into_inner();
+
+        while let Some(res) = stream.next().await {
+            println!("{:?}", res);
+        }
+        Ok(())
+    }
+}
