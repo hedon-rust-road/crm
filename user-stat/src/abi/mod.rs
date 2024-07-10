@@ -67,12 +67,12 @@ fn timestamp_query(name: &str, lower: Option<Timestamp>, upper: Option<Timestamp
 
     if lower.is_none() {
         let upper = ts_to_utc(upper.unwrap());
-        return format!("{} <= {}", name, upper.to_rfc3339());
+        return format!("{} <= '{}'", name, upper.to_rfc3339());
     }
 
     if upper.is_none() {
         let lower = ts_to_utc(lower.unwrap());
-        return format!("{} >= {}", name, lower.to_rfc3339());
+        return format!("{} >= '{}'", name, lower.to_rfc3339());
     }
 
     format!(
@@ -91,7 +91,10 @@ fn ts_to_utc(ts: Timestamp) -> DateTime<Utc> {
 mod tests {
     use futures::StreamExt;
 
-    use crate::config::AppConfig;
+    use crate::{
+        config::AppConfig,
+        pb::{IdQuery, QueryRequestBuilder, TimeQuery},
+    };
 
     use super::*;
 
@@ -111,5 +114,42 @@ mod tests {
             println!("{:?}", res);
         }
         Ok(())
+    }
+
+    #[tokio::test]
+    async fn query_should_work() -> anyhow::Result<()> {
+        let config = AppConfig::load().expect("Failed to load config");
+        let svc = UserStatsService::new(config).await;
+        let query = QueryRequestBuilder::default()
+            .timestamp(("created_at".to_string(), tq(Some(120), None)))
+            .timestamp(("last_visited_at".to_string(), tq(Some(30), None)))
+            .id(("viewed_but_not_started".to_string(), id(&[252790])))
+            .build()
+            .unwrap();
+        let mut stream = svc.query(query).await?.into_inner();
+        while let Some(res) = stream.next().await {
+            println!("{:?}", res);
+        }
+        Ok(())
+    }
+
+    fn id(id: &[u32]) -> IdQuery {
+        IdQuery { ids: id.to_vec() }
+    }
+
+    fn tq(lower: Option<i64>, upper: Option<i64>) -> TimeQuery {
+        TimeQuery {
+            lower: lower.map(to_ts),
+            upper: upper.map(to_ts),
+        }
+    }
+    fn to_ts(days: i64) -> Timestamp {
+        let dt = Utc::now()
+            .checked_sub_signed(chrono::Duration::days(days))
+            .unwrap();
+        Timestamp {
+            seconds: dt.timestamp(),
+            nanos: dt.timestamp_subsec_nanos() as i32,
+        }
     }
 }
