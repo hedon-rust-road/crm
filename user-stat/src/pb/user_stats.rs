@@ -50,8 +50,8 @@ pub struct TimeQuery {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IdQuery {
-    #[prost(string, repeated, tag = "1")]
-    pub ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(uint32, repeated, tag = "1")]
+    pub ids: ::prost::alloc::vec::Vec<u32>,
 }
 /// Generated client implementations.
 pub mod user_stats_client {

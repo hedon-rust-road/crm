@@ -25,5 +25,5 @@ message TimeQuery {
 }
 
 message IdQuery {
-    repeated string ids = 1;
+    repeated uint32 ids = 1;
 }
