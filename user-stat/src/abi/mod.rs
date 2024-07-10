@@ -1,9 +1,10 @@
 use chrono::{DateTime, TimeZone, Utc};
 use itertools::Itertools;
 use prost_types::Timestamp;
+use tonic::{Response, Status};
 
 use crate::{
-    pb::{QueryRequest, RawQueryRequest},
+    pb::{QueryRequest, RawQueryRequest, User},
     ResponseStream, ServiceResult, UserStatsService,
 };
 
@@ -34,7 +35,20 @@ impl UserStatsService {
     }
 
     pub async fn raw_query(&self, req: RawQueryRequest) -> ServiceResult<ResponseStream> {
-        todo!()
+        // TODO: query must only return email and name, so we should use sqlparser to parse the query
+        let Ok(ret) = sqlx::query_as::<_, User>(&req.query)
+            .fetch_all(&self.pool)
+            .await
+        else {
+            return Err(Status::internal(format!(
+                "Failed to fetch data with query: {}",
+                req.query
+            )));
+        };
+
+        Ok(Response::new(Box::pin(futures::stream::iter(
+            ret.into_iter().map(Ok),
+        ))))
     }
 }
 
