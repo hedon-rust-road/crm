@@ -19,6 +19,12 @@ sqlx = { version = "0.7.4", features = [
 ] }
 tokio = { version = "1.38.0", features = ["rt", "rt-multi-thread", "macros"] }
 tonic = { version = "0.11.0", features = ["zstd", "tls"] }
+tokio-stream = "0.1.15"
 tonic-build = "0.11.0"
 tracing = "0.1.40"
 tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
+derive_builder = "0.20.0"
+futures = "0.3.30"
+itertools = "0.12.1"
+proto-builder-trait = "0.6.1"
+rand = "0.8.5"
