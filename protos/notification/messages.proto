@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package notification;
+
+import "google/protobuf/timestamp.proto";
+
+// Define the email messages for the notification service.
+message EmailMessage {
+    // Unique identifier for the message.
+    string message_id = 1;
+    // Subject of the email.
+    string subject = 2;
+    // Sender of the email.
+    string sender = 3;
+    // Recipients of the email.
+    repeated string recipients = 4;
+    // Body of the email.
+    string body = 5;
+}
+
+// Define the sms messages for the notification service.
+message SmsMessage {
+    // Unique identifier for the message.
+    string message_id = 1;
+    // Sender of the sms.
+    string sender = 2;
+    // Recipients of the sms.
+    repeated string recipients = 3;
+    // Body of the sms.
+    string body = 4;
+}
+
+// Define the in-app messages for the notification service.
+message InAppMessage {
+    // Unique identifier for the message.
+    string message_id = 1;
+    //  Device ID of the recipient.
+    string device_id = 2;
+    // Title of the message.
+    string title = 3;
+    // Body of the message.
+    string body = 4;
+}
+
+// Define the request messages for the notification service.
+message SendRequest {
+    // one of the following messages can be sent.
+    oneof msg {
+        EmailMessage email = 1;
+        SmsMessage sms = 2;
+        InAppMessage in_app = 3;
+    }
+}
+
+// Define the response messages for the notification service.
+message SendResponse {
+    // Unique identifier for the message.
+    string message_id = 1;
+    // Timestamp when the message was sent.
+    google.protobuf.Timestamp timestamp = 2;
+}
