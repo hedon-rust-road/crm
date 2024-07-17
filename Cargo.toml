@@ -28,3 +28,9 @@ futures = "0.3.30"
 itertools = "0.12.1"
 proto-builder-trait = "0.6.1"
 rand = "0.8.5"
+crm-metadata = { path = "crm-metadata" }
+crm-send = { path = "crm-send" }
+user-stat = { path = "user-stat" }
+
+[workspace.package]
+publish = false

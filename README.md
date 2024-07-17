@@ -34,3 +34,9 @@ select pg_size_pretty (pg_indexes_size('user_stats')) size;
 ```bash
 select pg_size_pretty (pg_relation_size('user_stats')) size;
 ```
+
+### Create export table
+
+```sql
+create table export_user_stats as select * from user_stats limit 100;
+```
