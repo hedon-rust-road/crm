@@ -43,7 +43,9 @@ create table export_user_stats as select * from user_stats limit 100;
 
 ## Use Nginx to proxy gRPC
 
-https://nginx.org/en/docs/http/ngx_http_grpc_module.html
+> https://nginx.org/en/docs/http/ngx_http_grpc_module.html
+
+[nginx](./assets/img/nginx.jpg)
 
 ### Install Nginx in MacOS
 
@@ -78,8 +80,36 @@ brew services start nginx
 
 ## Generate root CA by mkcert
 
-https://github.com/FiloSottile/mkcert
+> https://github.com/FiloSottile/mkcert
+
+[tls](./assets/img/tls.jpg)
+
+### Install mkcert
+
+```bash
+brew install mkcert
+```
+
+### Generate root CA
 
 ```bash
 mkcert -install
+```
+
+### Generate certificate for local development
+
+```bash
+mkcert "*.acme.org" localhost 127.0.0.1 ::1
+```
+
+### Look for root CA pem
+
+```bash
+mkcert -CAROOT
+```
+
+### Copy rootCA.pem into fixtures directory
+
+```bash
+cp /Users/${user}/Library/Application\ Support/mkcert/rootCA.pem ./fixtures/rootCA.pem
 ```
