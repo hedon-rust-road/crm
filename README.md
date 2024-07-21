@@ -40,3 +40,46 @@ select pg_size_pretty (pg_relation_size('user_stats')) size;
 ```sql
 create table export_user_stats as select * from user_stats limit 100;
 ```
+
+## Use Nginx to proxy gRPC
+
+https://nginx.org/en/docs/http/ngx_http_grpc_module.html
+
+### Install Nginx in MacOS
+
+```bash
+brew install nginx
+```
+
+### Configuration Nginx
+
+```bash
+code /opt/homebrew/etc/nginx/nginx.conf
+```
+
+```conf
+server {
+    listen 8080;
+    http2 on;
+    server_name localhost;
+
+    location / {
+      # The 'grpc://' prefix is optional; unencrypted gRPC is the default
+      grpc_pass grpc://[::1]:50000;  # grpcs for grpc with tls/ssl
+    }
+}
+```
+
+### Start Nginx
+
+```bash
+brew services start nginx
+```
+
+## Generate root CA by mkcert
+
+https://github.com/FiloSottile/mkcert
+
+```bash
+mkcert -install
+```

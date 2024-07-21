@@ -4,7 +4,8 @@ use uuid::Uuid;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    let mut client = CrmClient::connect("http://[::1]:50000").await?;
+    // connect gRPC by nginx proxy
+    let mut client = CrmClient::connect("http://127.0.0.1:8080").await?;
 
     let req = WelcomeRequestBuilder::default()
         .id(Uuid::new_v4().to_string())
