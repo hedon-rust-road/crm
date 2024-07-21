@@ -5,7 +5,7 @@ pub mod pb;
 
 use std::{ops::Deref, pin::Pin, sync::Arc};
 
-use config::AppConfig;
+pub use config::AppConfig;
 use futures::Stream;
 use pb::{user_stats_server::UserStatsServer, QueryRequest, RawQueryRequest, User};
 use sqlx::PgPool;

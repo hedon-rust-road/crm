@@ -11,7 +11,7 @@ async fn main() -> anyhow::Result<()> {
     let config = AppConfig::load().expect("Failed to load config");
     let addr = config.server.port;
     let addr = format!("[::1]:{}", addr).parse().unwrap();
-    info!("UserService listening on {}", addr);
+    info!("Metadata service listening on {}", addr);
     let svc = MetadataService::new(config).into_server();
     Server::builder().add_service(svc).serve(addr).await?;
     Ok(())

@@ -1,16 +1,18 @@
-use crm::pb::{user_service_client::UserServiceClient, CreateUserRequest};
+use crm::pb::{crm_client::CrmClient, WelcomeRequestBuilder};
 use tonic::Request;
+use uuid::Uuid;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    let mut client = UserServiceClient::connect("http://[::1]:50051").await?;
+    let mut client = CrmClient::connect("http://[::1]:50050").await?;
 
-    let request = Request::new(CreateUserRequest {
-        name: "Hedon".to_string(),
-        email: "hedon@gmail.com".to_string(),
-    });
+    let req = WelcomeRequestBuilder::default()
+        .id(Uuid::new_v4().to_string())
+        .interval(93u32)
+        .content_ids([1u32, 2, 3])
+        .build()?;
 
-    let response = client.create_user(request).await?;
-    println!("RESPONSE={:?}", response);
+    let response = client.welcome(Request::new(req)).await?.into_inner();
+    println!("Response: {:?}", response);
     Ok(())
 }
