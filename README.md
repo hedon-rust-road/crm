@@ -45,7 +45,7 @@ create table export_user_stats as select * from user_stats limit 100;
 
 > https://nginx.org/en/docs/http/ngx_http_grpc_module.html
 
-[nginx](./assets/img/nginx.jpg)
+![nginx](./assets/img/nginx.jpg)
 
 ### Install Nginx in MacOS
 
@@ -82,7 +82,7 @@ brew services start nginx
 
 > https://github.com/FiloSottile/mkcert
 
-[tls](./assets/img/tls.jpg)
+![tls](./assets/img/tls.jpg)
 
 ### Install mkcert
 
