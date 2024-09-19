@@ -49,6 +49,7 @@ impl NotificationService {
         let notif = self.clone();
         tokio::spawn(async move {
             while let Some(Ok(req)) = stream.next().await {
+                info!("Sent message: {:?}", req.msg.clone());
                 let notif_clone = notif.clone();
                 let res = match req.msg {
                     Some(Msg::Email(email)) => email.send(notif_clone).await,

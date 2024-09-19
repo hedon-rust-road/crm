@@ -442,6 +442,7 @@ dependencies = [
  "prost",
  "prost-types",
  "proto-builder-trait",
+ "rand",
  "serde",
  "serde_yaml",
  "tokio",

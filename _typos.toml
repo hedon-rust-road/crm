@@ -7,4 +7,5 @@ extend-exclude = [
     ".gitignore",
     "crm/crm.yml",
     "fixtures/*",
+    "assets/*",
 ]

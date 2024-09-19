@@ -8,9 +8,11 @@ use tracing::info;
 pub struct DecodingKey(Ed25519PublicKey);
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[serde(rename_all = "camelCase")]
 pub struct User {
     pub id: i64,
     pub ws_id: i64,
+    pub ws_name: String,
     pub fullname: String,
     pub email: String,
     #[serde(skip)]

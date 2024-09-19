@@ -40,7 +40,9 @@ impl Crm for CrmService {
         &self,
         request: Request<RemindRequest>,
     ) -> Result<Response<RemindResponse>, Status> {
-        todo!()
+        let user: &auth::User = request.extensions().get().unwrap();
+        info!("User: {:?}", user);
+        self.remind(request.into_inner()).await
     }
 
     #[allow(unused)]
@@ -48,7 +50,9 @@ impl Crm for CrmService {
         &self,
         request: Request<RecallRequest>,
     ) -> Result<Response<RecallResponse>, Status> {
-        todo!()
+        let user: &auth::User = request.extensions().get().unwrap();
+        info!("User: {:?}", user);
+        self.recall(request.into_inner()).await
     }
 }
 
