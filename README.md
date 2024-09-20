@@ -21,13 +21,6 @@ cargo run --example gen --release
 sqlx migrate run
 ```
 
-### Run generate script
-
-```bash
-cd user-stat
-cargo run --example gen --release
-```
-
 ## Some useful commands
 
 ### Get indexes size
